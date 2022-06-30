@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import Container from "@material-ui/core/Container";
-import { makeStyles } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import "./Rescue.css";
 
 export default function Rescue() {

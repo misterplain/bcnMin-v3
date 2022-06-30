@@ -7,8 +7,7 @@ import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
 import { CardActionArea } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import Marquee from "react-fast-marquee";
-import { useHistory } from "react-router-dom";
-import { CallMissedSharp } from "@material-ui/icons";
+
 
 const reduceWaste = REDUCEWASTE;
 const reduceTips = REDUCETIPS;
