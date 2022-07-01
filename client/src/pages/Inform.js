@@ -10,6 +10,8 @@ import {
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -18,11 +20,11 @@ const useStyles = makeStyles({
   card: {
     display: "inline-block",
     border: "1px solid #e0e0e0",
-    margin: 20
+    margin: 20,
   },
 });
 
-export default function Inform() {
+const Inform = ({ auth: { isAuthenticated, loading }}) => {
   const classes = useStyles();
   const [blogPost, setBlogPost] = useState([]);
 
@@ -36,6 +38,23 @@ export default function Inform() {
       .catch((error) => {
         alert("Error in fetching Blog Post Info", error);
       });
+  };
+
+  const addFavorite = (blogId) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API}/v1/api/favorites`,
+        {
+          blog: blogId, // req.body.blog
+        },
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("token"),
+          },
+        }
+      )
+      .then((data) => console.log({ data }))
+      .catch((e) => console.log(e));
   };
 
   useEffect(() => {
@@ -65,7 +84,15 @@ export default function Inform() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size='small'>Share</Button>
+                  {isAuthenticated && !loading ? (
+                    <Button
+                      size='small'
+                      onClick={() => addFavorite(blogPost._id)}
+                    >
+                      Add to Favorites
+                    </Button>
+                  ) : null}
+
                   <Button size='small' href={blogPost.src} target='__blank'>
                     Learn More
                   </Button>
@@ -77,4 +104,16 @@ export default function Inform() {
       </div>
     </Container>
   );
-}
+};
+
+Inform.propTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  error: state.error,
+});
+
+export default connect(mapStateToProps)(Inform);

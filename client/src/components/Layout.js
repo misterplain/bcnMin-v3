@@ -71,7 +71,7 @@ const Layout = ({ children, auth: { isAuthenticated, loading }, logout }) => {
 
   const authLinks = (
     <>
-      <Button variant='outlined' path='/favorites'>
+      <Button variant='outlined' onClick={() => history.push('/favorites')}>
         Favorites
       </Button>
       <Button variant='outlined' onClick={logoutAndRedirect}>
