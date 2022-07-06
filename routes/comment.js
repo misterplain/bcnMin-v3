@@ -3,7 +3,7 @@ const Comment = require("../models/comment");
 const auth = require("../middleware/auth");
 
 //@route Get all comments /
-//@desc Get all favorites from everybody
+//@desc Get all comments from everybody
 //@access Public
 router.get("/", async (req, res) => {
   try {
