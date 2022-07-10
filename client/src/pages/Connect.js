@@ -77,7 +77,7 @@ const Connect = ({auth:{isAuthenticated, user}}) => {
         return (
           <>
             <div key={comment._id}>
-              <h3>{comment.comment}</h3>{" "}
+              <h3>{comment.comment}</h3>
 
               <h3>{comment.username}</h3>
             

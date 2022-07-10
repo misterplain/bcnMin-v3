@@ -10,6 +10,11 @@ import {
 import Container from "@material-ui/core/Container";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import './Tech.css';
+import {TOOLS } from '../shared/tools';
+
+
+const tools = TOOLS
 
 const validationSchema = Yup.object({
   kilometers: Yup.string().required(
@@ -121,6 +126,17 @@ const Tech = () => {
         Your weekly water footprint is {answer} which is {answerMonth} over the
         course of a month and {answerYear} over the course of a year
       </Typography>
+      <div className="tech__tools-container">
+          {tools.map((tools) => {
+            return (
+              <div key={tools.id} className="tech__tools-card">
+                <a href={tools.src} target="_blank" rel="noreferrer">
+                  <p className="tech__tools-text">{tools.name}</p>
+                </a>
+              </div>
+            );
+          })}
+        </div>
     </Container>
   );
 };
