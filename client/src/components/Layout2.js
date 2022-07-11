@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -13,10 +12,16 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Menu, MenuItem } from "@material-ui/core";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
+//redux and responsive buttons if logged in
+import { connect } from "react-redux";
+import { logout } from "../actions/auth";
+import PropTypes from "prop-types";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => {
@@ -54,14 +59,18 @@ const useStyles = makeStyles((theme) => {
     },
     test: {
       color: "white",
-      width: '100%'
+      width: "100%",
+    },
+    testAppBar: {
+      backgroundColor: "green",
     },
   };
 });
 
-function Layout2({ children }, props) {
+function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -70,25 +79,40 @@ function Layout2({ children }, props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (link) => {
+    setAnchorEl(null);
+    history.push(`/${link}`);
+  };
+
+  const logoutAndRedirect = () => {
+    setAnchorEl(null);
+    logout();
+    history.push("/inform");
+  }
+
   const menuItems = [
     {
       text: "Inform",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/inform",
     },
     {
       text: "Connect",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/connect",
     },
-    {
-      text: "Reduce",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
-      path: "/reduce",
-    },
+    // {
+    //   text: "Reduce",
+    //   icon: <AddCircleOutlineOutlined color='ssuccess' />,
+    //   path: "/reduce",
+    // },
     {
       text: "Tech",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/tech",
     },
     {
@@ -98,7 +122,7 @@ function Layout2({ children }, props) {
     },
     {
       text: "Collab",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/collab",
     },
   ];
@@ -121,6 +145,35 @@ function Layout2({ children }, props) {
             </ListItemButton>
           </ListItem>
         ))}
+        {!loading && isAuthenticated ? (
+          <>
+            <ListItem onClick={() => history.push("/favorites")}>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Favorites' />
+              </ListItemButton>
+            </ListItem>
+            <ListItem onClick={() => logoutAndRedirect()}>
+              {" "}
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Logout' />
+              </ListItemButton>
+            </ListItem>
+          </>
+        ) : (
+          <>
+            <ListItem onClick={() => history.push("/login")}>
+              {" "}
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Login' />
+              </ListItemButton>
+            </ListItem>
+            <ListItem onClick={() => history.push("/register")}>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Register' />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </List>
     </Box>
   );
@@ -131,7 +184,7 @@ function Layout2({ children }, props) {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar component='nav'>
-        <Toolbar>
+        <Toolbar className={classes.testAppBar}>
           <IconButton
             color='inherit'
             aria-label='open drawer'
@@ -156,6 +209,52 @@ function Layout2({ children }, props) {
                 </ListItemButton>
               </ListItem>
             ))}
+
+            <IconButton
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
+              onClick={handleMenu}
+              color='inherit'
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id='menu-appbar'
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              {!loading && isAuthenticated ? (
+                <>
+                  <MenuItem onClick={() => handleClose("favorites")}>
+                    Favorites
+                  </MenuItem>
+                  <MenuItem onClick={() => logoutAndRedirect()}>
+                    Logout
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem onClick={() => handleClose("login")}>
+                    Login
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose("register")}>
+                    Register
+                  </MenuItem>
+                </>
+              )}
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>
@@ -181,7 +280,6 @@ function Layout2({ children }, props) {
       </Box>
       <Box component='main' sx={{ p: 3 }}>
         <Toolbar />
-        <Typography>Lorem</Typography>
         {children}
       </Box>
     </Box>
@@ -194,6 +292,13 @@ Layout2.propTypes = {
    * You won't need it on your project.
    */
   window: PropTypes.func,
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
-export default Layout2;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  error: state.error,
+});
+
+export default connect(mapStateToProps, { logout })(Layout2);
