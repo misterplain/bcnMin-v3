@@ -2,6 +2,7 @@ import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import AppBar from "@mui/material/AppBar";
+import Header from '../pages/Header'
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -256,6 +257,7 @@ function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props
               )}
             </Menu>
           </Box>
+          
         </Toolbar>
       </AppBar>
       <Box component='nav'>

@@ -5,16 +5,31 @@ import {
   Button,
   TextField,
   FormLabel,
-  FormControl,
+  FormControl, Modal
 } from "@material-ui/core";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
 import Container from "@material-ui/core/Container";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import './Tech.css';
-import {TOOLS } from '../shared/tools';
+import "./Tech.css";
+import { TOOLS } from "../shared/tools";
 
+const tools = TOOLS;
 
-const tools = TOOLS
+//modal style
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const validationSchema = Yup.object({
   kilometers: Yup.string().required(
@@ -56,6 +71,11 @@ const Tech = () => {
   let answerMonth = answer * 4;
   let answerYear = answer * 52;
 
+  //modal state
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Container size='sm'>
       <h1>Tech</h1>
@@ -73,7 +93,7 @@ const Tech = () => {
           label='kilometers'
           id='kilometers'
           variant='outlined'
-          color='secondary'
+          color='success'
           fullWidth
           value={formik.values.kilometers}
           onChange={formik.handleChange}
@@ -86,7 +106,7 @@ const Tech = () => {
           label='fastFashion'
           id='fastFashion'
           variant='outlined'
-          color='secondary'
+          color='success'
           fullWidth
           value={formik.values.fastFashion}
           onChange={formik.handleChange}
@@ -99,7 +119,7 @@ const Tech = () => {
           label='flightHours'
           id='flightHours'
           variant='outlined'
-          color='secondary'
+          color='success'
           fullWidth
           value={formik.values.flightHours}
           onChange={formik.handleChange}
@@ -112,7 +132,7 @@ const Tech = () => {
           label='meat'
           id='meat'
           variant='outlined'
-          color='secondary'
+          color='success'
           fullWidth
           value={formik.values.meat}
           onChange={formik.handleChange}
@@ -120,23 +140,49 @@ const Tech = () => {
         {formik.errors.meat && formik.touched.meat ? (
           <div className=''>{formik.errors.meat}</div>
         ) : null}
-        <Button type='submit'>Check Footprint</Button>
+        <Button type='submit' onClick={handleOpen}>
+          Check Footprint
+        </Button>
+        <Modal
+          aria-labelledby='transition-modal-title'
+          aria-describedby='transition-modal-description'
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={open}>
+            <Box sx={style}>
+              <Typography
+                id='transition-modal-title'
+                variant='h6'
+                component='h2'
+              >
+                Your water footprint
+              </Typography>
+              <Typography id='transition-modal-description' sx={{ mt: 2 }}>
+                Your weekly water footprint is {answer} which is {answerMonth}{" "}
+                over the course of a month and {answerYear} over the course of a
+                year
+              </Typography>
+            </Box>
+          </Fade>
+        </Modal>
       </form>
-      <Typography>
-        Your weekly water footprint is {answer} which is {answerMonth} over the
-        course of a month and {answerYear} over the course of a year
-      </Typography>
-      <div className="tech__tools-container">
-          {tools.map((tools) => {
-            return (
-              <div key={tools.id} className="tech__tools-card">
-                <a href={tools.src} target="_blank" rel="noreferrer">
-                  <p className="tech__tools-text">{tools.name}</p>
-                </a>
-              </div>
-            );
-          })}
-        </div>
+      <div className='tech__tools-container'>
+        {tools.map((tools) => {
+          return (
+            <div key={tools.id} className='tech__tools-card'>
+              <a href={tools.src} target='_blank' rel='noreferrer'>
+                <p className='tech__tools-text'>{tools.name}</p>
+              </a>
+            </div>
+          );
+        })}
+      </div>
     </Container>
   );
 };

@@ -14,6 +14,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
 import Layout from "./components/Layout";
 import Layout2 from "./components/Layout2";
+import Header from "./pages/Header";
 //redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -48,6 +49,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
+          
           <Layout2>
             <Switch>
               <Route exact path='/inform'>

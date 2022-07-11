@@ -63,13 +63,13 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
               className=''
               label='Comment'
               variant='outlined'
-              color='secondary'
+              color='success'
               fullWidth
               required
               value={comment}
             />
 
-            <Button type='submit' variant='contained' color='secondary'>
+            <Button type='submit' variant='contained' color='success'>
               Post Comment
             </Button>
           </form>
