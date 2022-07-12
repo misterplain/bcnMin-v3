@@ -5,16 +5,23 @@ import {
   Button,
   TextField,
   FormLabel,
-  FormControl, Modal
+  FormControl,
+  Modal,
+  Box,
+  Card,
+  Grid,
 } from "@material-ui/core";
+import Link from "@mui/material/Link";
+
 import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Tech.css";
 import { TOOLS } from "../shared/tools";
+import PropTypes from "prop-types";
 
 const tools = TOOLS;
 
@@ -30,6 +37,22 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const useSyles = makeStyles({
+  toolsContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: '20px',
+  },
+  techCard: {
+    textDecoration: "none",
+    textAlign: "center",
+    color: "white",
+    backgroundColor: "green",
+    margin: "3px",
+    borderRadius: '10px'
+  },
+});
 
 const validationSchema = Yup.object({
   kilometers: Yup.string().required(
@@ -47,6 +70,7 @@ const validationSchema = Yup.object({
 });
 
 const Tech = () => {
+  const classes = useSyles();
   const [answer, setAnswer] = useState(0);
   const formik = useFormik({
     initialValues: {
@@ -172,17 +196,30 @@ const Tech = () => {
           </Fade>
         </Modal>
       </form>
-      <div className='tech__tools-container'>
+      <Grid container spacing={3} className={classes.toolsContainer}>
         {tools.map((tools) => {
           return (
-            <div key={tools.id} className='tech__tools-card'>
-              <a href={tools.src} target='_blank' rel='noreferrer'>
-                <p className='tech__tools-text'>{tools.name}</p>
-              </a>
-            </div>
+            <Grid item xs={11} sm={5} md={2} key={tools.id} className={classes.techCard}>
+              <Link href={tools.src} target='_blank' rel='noreferrer' underline="none" color="inherit">
+                <Typography>{tools.name}</Typography>
+              </Link>
+            </Grid>
           );
         })}
-      </div>
+      </Grid>
+      {/* <Box sx={{ flexGrow: 1 }}>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          {tools.map((tools) => (
+            <Grid item xs={2} sm={4} md={4} key={tools.id}>
+              <Typography>{tools.name}</Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Box> */}
     </Container>
   );
 };

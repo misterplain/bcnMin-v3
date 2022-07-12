@@ -17,12 +17,23 @@ import PropTypes from "prop-types";
 const useStyles = makeStyles({
   cardContainer: {
     display: "flex",
+    flexWrap: "wrap",
+    border: "1px solid black",
+    justifyContent: "center",
   },
   card: {
     display: "inline-block",
     border: "1px solid #e0e0e0",
     margin: 20,
+    flexBasis: "40%",
+    justifyContent: 'center'
   },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-end'
+  }
 });
 
 const Inform = ({ auth: { isAuthenticated, loading } }) => {
@@ -78,14 +89,14 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
 
   useEffect(() => {
     axios
-    .get(`${process.env.REACT_APP_API}/v1/api/blog`)
-    .then((response) => {
-      console.log(response.data);
-      setBlogPost(response.data);
-    })
-    .catch((error) => {
-      alert("Error in fetching Blog Post Info", error);
-    });
+      .get(`${process.env.REACT_APP_API}/v1/api/blog`)
+      .then((response) => {
+        console.log(response.data);
+        setBlogPost(response.data);
+      })
+      .catch((error) => {
+        alert("Error in fetching Blog Post Info", error);
+      });
   }, []);
 
   return (
@@ -102,40 +113,40 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
                   image={blogPost.img}
                   alt='green iguana'
                 />
-                <CardContent>
+                <CardContent className={classes.cardContent}>
                   <Typography gutterBottom variant='h5' component='div'>
                     {blogPost.title}
                   </Typography>
                   <Typography variant='body2' color='text.secondary'>
                     {blogPost.caption}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  {isAuthenticated && !loading && (
-                    <div>
-                      {user?.favorites &&
-                      user?.favorites?.includes(blogPost._id) ? (
-                        <Button
-                          size='small'
-                          onClick={() => deleteFavorite(blogPost._id)}
-                        >
-                          Delete
-                        </Button>
-                      ) : (
-                        <Button
-                          size='small'
-                          onClick={() => addFavorite(blogPost._id)}
-                        >
-                          Add to Favorites
-                        </Button>
-                      )}
-                    </div>
-                  )}
+                  </Typography>{" "}
+                  <CardActions>
+                    {isAuthenticated && !loading && (
+                      <div>
+                        {user?.favorites &&
+                        user?.favorites?.includes(blogPost._id) ? (
+                          <Button
+                            size='small'
+                            onClick={() => deleteFavorite(blogPost._id)}
+                          >
+                            Delete
+                          </Button>
+                        ) : (
+                          <Button
+                            size='small'
+                            onClick={() => addFavorite(blogPost._id)}
+                          >
+                            Add to Favorites
+                          </Button>
+                        )}
+                      </div>
+                    )}
 
-                  <Button size='small' href={blogPost.src} target='__blank'>
-                    Learn More
-                  </Button>
-                </CardActions>
+                    <Button size='small' href={blogPost.src} target='__blank'>
+                      Learn More
+                    </Button>
+                  </CardActions>
+                </CardContent>
               </Card>
             </>
           );
