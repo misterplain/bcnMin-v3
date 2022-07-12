@@ -9,7 +9,7 @@ import {
   Box,
   Typography,
   Container,
-  Modal,
+  Modal, TextField
 } from "@material-ui/core";
 //redux
 import { connect } from "react-redux";
@@ -66,7 +66,6 @@ const Collab = (props) => {
       });
       console.log(values);
       resetForm();
-      handleOpen();
     },
   });
 

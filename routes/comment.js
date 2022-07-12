@@ -7,7 +7,11 @@ const auth = require("../middleware/auth");
 //@access Public
 router.get("/", async (req, res) => {
   try {
-    const comments = await Comment.find();
+    const comments = await Comment.find().populate({
+      path:"user",
+      model:"User",
+      select:{email:1,username:1,admin:1}
+    });
     res.json(comments);
     console.log('comments fetched')
   } catch (err) {
@@ -23,6 +27,7 @@ router.post("/", auth, async (req, res) => {
   const comment = new Comment({
     user: req.user.id,
     comment: req.body.comment,
+    // username: req.user.username,
   });
   try {
     const newComment = await comment.save();

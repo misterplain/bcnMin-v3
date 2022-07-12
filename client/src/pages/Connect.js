@@ -4,12 +4,15 @@ import { Card, CardContent, CardActions, Typography } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 //redux and responsive buttons if logged in
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 const Connect = ({ auth: { isAuthenticated, loading } }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const { user = {} } = useSelector((state) => state.auth);
+
+  console.log({ user });
 
   const fetchComments = () => {
     axios
@@ -50,6 +53,8 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
     fetchComments();
   };
 
+  console.log(comment);
+
   return (
     <Container>
       <h1>Connect</h1>
@@ -87,16 +92,22 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
                 <Typography variant='h5' component='div'>
                   {comment.comment}
                 </Typography>
+                <Typography variant='h5' component='div'>
+                  {comment.user.username}
+                </Typography>
               </CardContent>{" "}
-              <CardActions>
-                <Button
-                  type='submit'
-                  value={comment._id}
-                  onClick={() => deleteComment(comment._id)}
-                >
-                  Delete
-                </Button>
-              </CardActions>
+
+              {user._id === comment.user._id ? (
+                <CardActions>
+                  <Button
+                    type='submit'
+                    value={comment._id}
+                    onClick={() => deleteComment(comment._id)}
+                  >
+                    Delete
+                  </Button>
+                </CardActions>
+              ) : null}
             </Card>
           </>
         );
