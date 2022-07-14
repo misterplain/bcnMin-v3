@@ -6,7 +6,8 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
-  LOGIN_FAIL, LOGOUT
+  LOGIN_FAIL, LOGOUT,
+  UPDATE_USER
 } from "../actions/types";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -28,6 +29,13 @@ export const loadUser = () => async (dispatch) => {
     });
   }
 };
+
+export const updateUser = (payload)=>{
+    return{
+      type:UPDATE_USER,
+      payload:payload,
+    }
+}
 
 //register
 export const register =

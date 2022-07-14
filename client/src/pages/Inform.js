@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import InformFavButton from "./InformFavButton";
 import {
   Card,
   CardActions,
@@ -7,12 +8,13 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { loadUser,updateUser } from "../actions/auth.js";
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -26,21 +28,25 @@ const useStyles = makeStyles({
     border: "1px solid #e0e0e0",
     margin: 20,
     flexBasis: "40%",
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   cardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'flex-end'
-  }
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "flex-end",
+  },
 });
 
 const Inform = ({ auth: { isAuthenticated, loading } }) => {
   const classes = useStyles();
   const [blogPost, setBlogPost] = useState([]);
   const [favorite, setFavorite] = useState(false);
+  const [change, setChange] = useState();
+
+
   const { user = {} } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   console.log({ user });
 
@@ -69,9 +75,12 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
           },
         }
       )
-      .then((data) => console.log({ data }))
+      .then((data) => {
+        // setChange((previousChange) => !previousChange);
+        dispatch(updateUser({blogId,isAddToFavorite:true}))
+      })
       .catch((e) => console.log(e));
-    setFavorite(true);
+    // setFavorite(true);
   };
 
   function deleteFavorite(blogId) {
@@ -82,21 +91,24 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
           "x-auth-token": localStorage.getItem("token"),
         },
       })
-      .then((data) => console.log({ data }))
+      .then((data) => {
+        // setChange((previousChange) => !previousChange);
+        dispatch(updateUser({blogId,isAddToFavorite:false}))
+      })
       .catch((e) => console.log(e));
-    setFavorite(false);
   }
 
+  useEffect(()=>{
+    dispatch(loadUser())
+  },[change])
+
+ 
+
+
+  
+
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API}/v1/api/blog`)
-      .then((response) => {
-        console.log(response.data);
-        setBlogPost(response.data);
-      })
-      .catch((error) => {
-        alert("Error in fetching Blog Post Info", error);
-      });
+   fetchBlogPosts()
   }, []);
 
   return (
@@ -123,22 +135,11 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
                   <CardActions>
                     {isAuthenticated && !loading && (
                       <div>
-                        {user?.favorites &&
-                        user?.favorites?.includes(blogPost._id) ? (
-                          <Button
-                            size='small'
-                            onClick={() => deleteFavorite(blogPost._id)}
-                          >
-                            Delete
-                          </Button>
-                        ) : (
-                          <Button
-                            size='small'
-                            onClick={() => addFavorite(blogPost._id)}
-                          >
-                            Add to Favorites
-                          </Button>
-                        )}
+                        <InformFavButton
+                          onAddFavorite={() => addFavorite(blogPost._id)}
+                          onDeleteFavorite={() => deleteFavorite(blogPost._id)}
+                          blogPost={blogPost}
+                        />
                       </div>
                     )}
 
