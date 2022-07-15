@@ -15,7 +15,7 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
   console.log({ user });
 
   const fetchComments = () => {
-    axios
+    const comments = axios
       .get(`${process.env.REACT_APP_API}/v1/api/comments`)
       .then((response) => {
         console.log(response.data);
@@ -84,25 +84,26 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
       )}
 
       <h1>comments section</h1>
-      {comments.map((comment) => {
+
+      {comments?.map((comment) => {
         return (
           <>
-            <Card sx={{ minWidth: 275 }} key={comment._id}>
+            <Card sx={{ minWidth: 275 }} key={comment?._id}>
               <CardContent>
                 <Typography variant='h5' component='div'>
-                  {comment.comment}
+                  {comment?.comment}
                 </Typography>
                 <Typography variant='h5' component='div'>
-                  {comment.user.username}
+                  {comment?.user.username}
                 </Typography>
               </CardContent>{" "}
-
-              {user._id === comment.user._id ? (
+              
+              {isAuthenticated && user?._id === comment?.user._id ? (
                 <CardActions>
                   <Button
                     type='submit'
-                    value={comment._id}
-                    onClick={() => deleteComment(comment._id)}
+                    value={comment?._id}
+                    onClick={() => deleteComment(comment?._id)}
                   >
                     Delete
                   </Button>

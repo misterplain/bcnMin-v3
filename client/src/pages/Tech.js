@@ -6,7 +6,6 @@ import {
   TextField,
   FormLabel,
   FormControl,
-  Modal,
   Box,
   Card,
   Grid,
@@ -22,12 +21,13 @@ import * as Yup from "yup";
 import "./Tech.css";
 import { TOOLS } from "../shared/tools";
 import PropTypes from "prop-types";
+import Modal from "./Modal";
 
 const tools = TOOLS;
 
 //modal style
 const style = {
-  position: "absolute",
+  position: "rela",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -42,7 +42,7 @@ const useSyles = makeStyles({
   toolsContainer: {
     display: "flex",
     justifyContent: "center",
-    marginTop: '20px',
+    marginTop: "20px",
   },
   techCard: {
     textDecoration: "none",
@@ -50,7 +50,7 @@ const useSyles = makeStyles({
     color: "white",
     backgroundColor: "green",
     margin: "3px",
-    borderRadius: '10px'
+    borderRadius: "10px",
   },
 });
 
@@ -72,6 +72,7 @@ const validationSchema = Yup.object({
 const Tech = () => {
   const classes = useSyles();
   const [answer, setAnswer] = useState(0);
+
   const formik = useFormik({
     initialValues: {
       kilometers: "",
@@ -167,17 +168,7 @@ const Tech = () => {
         <Button type='submit' onClick={handleOpen}>
           Check Footprint
         </Button>
-        <Modal
-          aria-labelledby='transition-modal-title'
-          aria-describedby='transition-modal-description'
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
+        <Modal open={open} setOpen={setOpen} onClose={() => setOpen(false)}>
           <Fade in={open}>
             <Box sx={style}>
               <Typography
@@ -199,8 +190,21 @@ const Tech = () => {
       <Grid container spacing={3} className={classes.toolsContainer}>
         {tools.map((tools) => {
           return (
-            <Grid item xs={11} sm={5} md={2} key={tools.id} className={classes.techCard}>
-              <Link href={tools.src} target='_blank' rel='noreferrer' underline="none" color="inherit">
+            <Grid
+              item
+              xs={11}
+              sm={5}
+              md={2}
+              key={tools.id}
+              className={classes.techCard}
+            >
+              <Link
+                href={tools.src}
+                target='_blank'
+                rel='noreferrer'
+                underline='none'
+                color='inherit'
+              >
                 <Typography>{tools.name}</Typography>
               </Link>
             </Grid>

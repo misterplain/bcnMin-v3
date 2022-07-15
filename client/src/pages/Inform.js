@@ -8,13 +8,13 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import { useSelector ,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { loadUser,updateUser } from "../actions/auth.js";
+import { loadUser, updateUser } from "../actions/auth.js";
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -43,7 +43,6 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
   const [blogPost, setBlogPost] = useState([]);
   const [favorite, setFavorite] = useState(false);
   const [change, setChange] = useState();
-
 
   const { user = {} } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -77,7 +76,7 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
       )
       .then((data) => {
         // setChange((previousChange) => !previousChange);
-        dispatch(updateUser({blogId,isAddToFavorite:true}))
+        dispatch(updateUser({ blogId, isAddToFavorite: true }));
       })
       .catch((e) => console.log(e));
     // setFavorite(true);
@@ -93,22 +92,17 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
       })
       .then((data) => {
         // setChange((previousChange) => !previousChange);
-        dispatch(updateUser({blogId,isAddToFavorite:false}))
+        dispatch(updateUser({ blogId, isAddToFavorite: false }));
       })
       .catch((e) => console.log(e));
   }
 
-  useEffect(()=>{
-    dispatch(loadUser())
-  },[change])
-
- 
-
-
-  
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [change]);
 
   useEffect(() => {
-   fetchBlogPosts()
+    fetchBlogPosts();
   }, []);
 
   return (

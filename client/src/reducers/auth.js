@@ -87,11 +87,10 @@ export default function (state = initialState, action) {
           action.payload.blogId,
         ];
       } else {
-        let index = cloneState.user.favorites.findIndex(
-          action.payload.blogId
-
-        );
-        cloneState.user.favorites = cloneState.user.favorites.splice(index, 1);
+    
+       
+        cloneState.user.favorites =  cloneState.user.favorites?.filter((value,index)=>value!==action.payload.blogId);
+     
       }
       return cloneState;
 

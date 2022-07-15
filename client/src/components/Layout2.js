@@ -184,7 +184,8 @@ function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar component='nav'>
+      <AppBar component='nav' style={{marginBottom:250}}>
+        <Header/>
         <Toolbar className={classes.testAppBar}>
           <IconButton
             color='inherit'
