@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { loadUser, updateUser } from "../actions/auth.js";
+import Title from "./Title";
 
 const useStyles = makeStyles({
   cardContainer: {
@@ -107,7 +108,7 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
 
   return (
     <Container size='sm'>
-      <h1>Inform</h1>
+      <Title title={'news concerning local efforts to minimize'}/>
       <div className={classes.cardContainer}>
         {blogPost.map((blogPost) => {
           return (

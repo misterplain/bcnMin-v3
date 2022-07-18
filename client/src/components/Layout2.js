@@ -10,13 +10,11 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Menu, MenuItem } from "@material-ui/core";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
 //redux and responsive buttons if logged in
@@ -281,8 +279,7 @@ function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props
           {drawer}
         </Drawer>
       </Box>
-      <Box component='main' sx={{ p: 3 }}>
-        <Toolbar />
+      <Box component='main' sx={{ p: 3, mt: '140px' }}>
         {children}
       </Box>
     </Box>
