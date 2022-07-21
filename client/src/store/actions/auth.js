@@ -1,15 +1,6 @@
 import axios from "axios";
-import { setAlert } from "./alert";
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  USER_LOADED,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL, LOGOUT,
-  UPDATE_USER
-} from "../actions/types";
-import setAuthToken from "../utils/setAuthToken";
+import * as actions from './types';
+import setAuthToken from "../../utils/setAuthToken";
 
 //Load user
 export const loadUser = () => async (dispatch) => {
@@ -20,19 +11,19 @@ export const loadUser = () => async (dispatch) => {
   try {
     const res = await axios.get("http://localhost:8000/v1/api/auth");
     dispatch({
-      type: USER_LOADED,
+      type: actions.USER_LOADED,
       payload: res.data,
     });
   } catch (err) {
     dispatch({
-      type: AUTH_ERROR,
+      type: actions.AUTH_ERROR,
     });
   }
 };
 
 export const updateUser = (payload)=>{
     return{
-      type:UPDATE_USER,
+      type: actions.UPDATE_USER,
       payload:payload,
     }
 }
@@ -57,7 +48,7 @@ export const register =
         config
       );
       dispatch({
-        type: REGISTER_SUCCESS,
+        type: actions.REGISTER_SUCCESS,
         payload: res.data,
       });
       dispatch(loadUser());
@@ -67,11 +58,10 @@ export const register =
       //loop through errors to get specific error
       const errors = error.response.data.errors;
       if (errors) {
-        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
         console.log(errors);
       }
       dispatch({
-        type: REGISTER_FAIL,
+        type: actions.REGISTER_FAIL,
       });
       console.log(error);
     }
@@ -93,7 +83,7 @@ export const login = (email, password) => async (dispatch) => {
       config
     );
     dispatch({
-      type: LOGIN_SUCCESS,
+      type: actions.LOGIN_SUCCESS,
       payload: res.data,
     });
     dispatch(loadUser());
@@ -101,11 +91,10 @@ export const login = (email, password) => async (dispatch) => {
     //loop through errors to get specific error
     const errors = error.response.data.errors;
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
       console.log(errors);
     }
     dispatch({
-      type: LOGIN_FAIL,
+      type: actions.LOGIN_FAIL,
     });
     console.log(error);
   }
@@ -114,7 +103,7 @@ export const login = (email, password) => async (dispatch) => {
 //logout / clear profile
 export const logout = () => (dispatch) => {
   dispatch({
-    type: LOGOUT,
+    type: actions.LOGOUT,
   });
 }
 

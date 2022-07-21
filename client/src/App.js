@@ -1,24 +1,22 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {useEffect} from 'react'
 //components
-import Inform from "./pages/Inform";
-import Connect from "./pages/Connect";
-import Reduce from "./pages/Reduce";
-import Tech from "./pages/Tech";
-import Rescue from "./pages/Rescue";
-import Collab from "./pages/Collab";
+import Inform from "./pages/Inform/Inform";
+import Connect from "./pages/Connect/Connect";
+import Reduce from "./pages/Reduce/Reduce";
+import Tech from "./pages/Tech/Tech";
+import Rescue from "./pages/Rescue/Rescue";
+import Collab from "./pages/Collab/Collab";
 import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
 import Layout from "./components/Layout";
-import Layout2 from "./components/Layout2";
-import Header from "./pages/Header";
 //redux
 import { Provider } from "react-redux";
-import store from "./store";
-import { loadUser } from "./actions/auth";
+import store from "./store/store";
+import { loadUser } from "./store/actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 
 const theme = createMuiTheme({
@@ -50,7 +48,7 @@ function App() {
       <Provider store={store}>
         <Router>
           
-          <Layout2>
+          <Layout>
             <Switch>
               <Route exact path='/inform'>
                 <Inform />
@@ -80,7 +78,7 @@ function App() {
                 <Register />
               </Route>
             </Switch>
-          </Layout2>
+          </Layout>
         </Router>
       </Provider>
     </ThemeProvider>

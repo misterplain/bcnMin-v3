@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { COLLAB } from "../shared/collab";
+import { COLLAB } from "../../shared/collab";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -13,7 +13,6 @@ import {
 } from "@material-ui/core";
 //redux
 import { connect } from "react-redux";
-import { setAlert } from "../actions/alert";
 import PropTypes from "prop-types";
 
 const collab = COLLAB;
@@ -177,8 +176,5 @@ const Collab = (props) => {
   );
 };
 
-Collab.propTypes = {
-  setAlert: PropTypes.func.isRequired,
-};
 
-export default connect(null, { setAlert })(Collab);
+export default connect(null)(Collab);

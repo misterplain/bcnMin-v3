@@ -5,8 +5,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 //redux
 import { connect } from "react-redux";
-import { setAlert } from "../actions/alert";
-import { register } from "../actions/auth";
+import { register } from "../store/actions/auth";
 import PropTypes from "prop-types";
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
@@ -92,4 +91,4 @@ const mapStateToProps = (state) => ({
   error: state.error,
 });
 
-export default connect(mapStateToProps, { setAlert, register })(Register);
+export default connect(mapStateToProps, { register })(Register);

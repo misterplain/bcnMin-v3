@@ -1,26 +1,28 @@
-import React from "react";
-import { Fragment } from "react";
-import { makeStyles } from "@material-ui/core";
-import Drawer from "@material-ui/core/Drawer";
-import Typography from "@material-ui/core/Typography";
+import * as React from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@material-ui/core";
+import AppBar from "@mui/material/AppBar";
+import Header from '../ui/Header'
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Menu, MenuItem } from "@material-ui/core";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import { format } from "date-fns";
-import Avatar from "@material-ui/core/Avatar";
-import { Button } from "@material-ui/core";
 //redux and responsive buttons if logged in
 import { connect } from "react-redux";
-import { logout } from "../actions/auth";
+import { logout } from "../store/actions/auth";
 import PropTypes from "prop-types";
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => {
   return {
     page: {
@@ -54,57 +56,62 @@ const useStyles = makeStyles((theme) => {
     avatar: {
       marginLeft: theme.spacing(2),
     },
+    test: {
+      color: "white",
+      width: "100%",
+    },
+    testAppBar: {
+      backgroundColor: "green",
+    },
   };
 });
 
-const Layout = ({ children, auth: { isAuthenticated, loading }, logout }) => {
+function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props) {
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
-  //auth links if logged in or not
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (link) => {
+    setAnchorEl(null);
+    history.push(`/${link}`);
+  };
 
   const logoutAndRedirect = () => {
+    setAnchorEl(null);
     logout();
-    history.push("/login");
+    history.push("/inform");
   }
-
-  const authLinks = (
-    <>
-      <Button variant='outlined' onClick={() => history.push('/favorites')}>
-        Favorites
-      </Button>
-      <Button variant='outlined' onClick={logoutAndRedirect}>
-        Logout
-      </Button>
-    </>
-  );
-
-  const guestLinks = (
-    <Button variant='outlined' onClick={() => history.push('/login')}>
-      Login
-    </Button>
-  );
 
   const menuItems = [
     {
       text: "Inform",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/inform",
     },
     {
       text: "Connect",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/connect",
     },
-    {
-      text: "Reduce",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
-      path: "/reduce",
-    },
+    // {
+    //   text: "Reduce",
+    //   icon: <AddCircleOutlineOutlined color='ssuccess' />,
+    //   path: "/reduce",
+    // },
     {
       text: "Tech",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/tech",
     },
     {
@@ -114,66 +121,177 @@ const Layout = ({ children, auth: { isAuthenticated, loading }, logout }) => {
     },
     {
       text: "Collab",
-      icon: <AddCircleOutlineOutlined color='ssuccess' />,
+      icon: <AddCircleOutlineOutlined color='success' />,
       path: "/collab",
     },
   ];
 
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+      <Typography variant='h6' sx={{ my: 2 }}>
+        bcnMinimalista
+      </Typography>
+      <Divider />
+      <List>
+        {menuItems.map((item) => (
+          <ListItem
+            key={item.text}
+            disablePadding
+            onClick={() => history.push(item.path)}
+          >
+            <ListItemButton sx={{ textAlign: "center" }}>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        {!loading && isAuthenticated ? (
+          <>
+            <ListItem onClick={() => history.push("/favorites")}>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Favorites' />
+              </ListItemButton>
+            </ListItem>
+            <ListItem onClick={() => logoutAndRedirect()}>
+              {" "}
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Logout' />
+              </ListItemButton>
+            </ListItem>
+          </>
+        ) : (
+          <>
+            <ListItem onClick={() => history.push("/login")}>
+              {" "}
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Login' />
+              </ListItemButton>
+            </ListItem>
+            <ListItem onClick={() => history.push("/register")}>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary='Register' />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
+      </List>
+    </Box>
+  );
+
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
+
   return (
-    <div className={classes.root}>
-      {/* app bar */}
-      <AppBar
-        position='fixed'
-        className={classes.appBar}
-        elevation={0}
-        color='primary'
-      >
-        <Toolbar>
-          <Typography className={classes.date}>
-            Today is the {format(new Date(), "do MMMM Y")}
-          </Typography>
-          {!loading && (
-            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-          )}
-          <Avatar className={classes.avatar} src='' />
+    <Box sx={{ display: "flex" }}>
+      <AppBar component='nav' style={{marginBottom:250}}>
+        <Header/>
+        <Toolbar className={classes.testAppBar}>
+          <IconButton
+            color='inherit'
+            aria-label='open drawer'
+            edge='start'
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box
+            sx={{ display: { xs: "none", sm: "flex" } }}
+            className={classes.test}
+          >
+            {menuItems.map((item) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                onClick={() => history.push(item.path)}
+              >
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+
+            <IconButton
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
+              onClick={handleMenu}
+              color='inherit'
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id='menu-appbar'
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              {!loading && isAuthenticated ? (
+                <>
+                  <MenuItem onClick={() => handleClose("favorites")}>
+                    Favorites
+                  </MenuItem>
+                  <MenuItem onClick={() => logoutAndRedirect()}>
+                    Logout
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem onClick={() => handleClose("login")}>
+                    Login
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose("register")}>
+                    Register
+                  </MenuItem>
+                </>
+              )}
+            </Menu>
+          </Box>
+          
         </Toolbar>
       </AppBar>
-
-      {/* side drawer */}
-      <Drawer
-        className={classes.drawer}
-        variant='permanent'
-        classes={{ paper: classes.drawerPaper }}
-        anchor='left'
-      >
-        <div>
-          <Typography variant='h5' className={classes.title}>
-            bcnMinimalista
-          </Typography>
-        </div>
-        <List>
-          {menuItems.map((item) => (
-            <ListItem
-              button
-              key={item.text}
-              onClick={() => history.push(item.path)}
-              className={location.pathname == item.path ? classes.active : null}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <div className={classes.page}>
-        <div className={classes.toolbar}></div>
+      <Box component='nav'>
+        <Drawer
+          container={container}
+          variant='temporary'
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box component='main' sx={{ p: 3, mt: '140px' }}>
         {children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
-};
+}
 
-Layout.propTypes = {
+Layout2.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
@@ -183,4 +301,4 @@ const mapStateToProps = (state) => ({
   error: state.error,
 });
 
-export default connect(mapStateToProps, { logout })(Layout);
+export default connect(mapStateToProps, { logout })(Layout2);

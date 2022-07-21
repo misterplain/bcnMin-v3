@@ -8,16 +8,13 @@ import {
   Box,
   Grid,
 } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
 import axios from "axios";
 //redux and responsive buttons if logged in
-
 import PropTypes from "prop-types";
-import Title from "./Title";
+import Title from "../../ui/Title";
 import { makeStyles } from "@material-ui/core/styles";
 //redux
-import { loadUser } from "../actions/auth.js";
-import { updateComments, getMessages } from "../actions/comments";
+import { loadUser } from "../../store/actions/auth.js";
 import { connect, useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
@@ -29,25 +26,26 @@ const useStyles = makeStyles({
 const Connect = ({ auth: { isAuthenticated, loading } }) => {
   const classes = useStyles();
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
   const { user = {} } = useSelector((state) => state.auth);
-  const { commentsList = [] } = useSelector((state) => state.comments);
+  const  commentsList = useSelector((state) => state.comments);
   const dispatch = useDispatch();
-
-  console.log({ user });
-  console.log( commentsList );
 
   useEffect(() => {
     dispatch(loadUser());
+    fetchComments()
   }, []);
 
-  const fetchComments = () => {
-    dispatch(getMessages());
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/v1/api/comments`
+      );
+      console.log(response.data)
+      dispatch({type: 'FETCH_COMMENTS', payload: response.data})
+    } catch (err) {
+      console.log("error", err);
+    }
   };
-
-  useEffect(() => {
-    fetchComments();
-  }, []);
 
   const deleteComment = async (id) => {
     console.log(id);
@@ -55,7 +53,7 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
       .delete(`${process.env.REACT_APP_API}/v1/api/comments/${id}`)
       .then((res) => console.log("comment deleted"))
       .catch((err) => console.log(err));
-    dispatch(updateComments({ comment: { id }, isAddComment: false }));
+      dispatch({type: 'DELETE_COMMENT', payload: id})
   };
 
   const postComment = async (e) => {
@@ -63,16 +61,13 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
     setComment("");
     const newComment = {
       comment: comment,
+      username: user.username,
     };
     await axios
       .post(`${process.env.REACT_APP_API}/v1/api/comments`, newComment)
       .then((res) => console.log(res.data));
-
-    console.log(comment);
-    dispatch(updateComments({ comment: { comment }, isAddComment: true }));
+      dispatch({type: 'ADD_COMMENT', payload: {newComment}})
   };
-
-  console.log(comment);
 
   return (
     <Grid
@@ -130,8 +125,7 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
         <h1>comments section</h1>
       </Grid>
       <Grid item>
-        {" "}
-        {comments?.map((comment) => {
+        {commentsList?.comments.map((comment) => {
           return (
             <>
               <Card sx={{ minWidth: 275 }} key={comment?._id}>
@@ -140,8 +134,9 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
                     {comment?.comment}
                   </Typography>
                   <Typography variant='h5' component='div'>
-                    {comment?.user.username}
+                    {comment?.username}
                   </Typography>
+
                 </CardContent>{" "}
                 {isAuthenticated && user?._id === comment?.user._id ? (
                   <CardActions>

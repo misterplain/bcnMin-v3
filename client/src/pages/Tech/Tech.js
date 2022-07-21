@@ -19,9 +19,9 @@ import Container from "@material-ui/core/Container";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Tech.css";
-import { TOOLS } from "../shared/tools";
+import { TOOLS } from "../../shared/tools";
 import PropTypes from "prop-types";
-import Modal from "./Modal";
+import Modal from "../../ui/Modal";
 
 const tools = TOOLS;
 

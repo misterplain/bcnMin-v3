@@ -14,8 +14,8 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { loadUser, updateUser } from "../actions/auth.js";
-import Title from "./Title";
+import { loadUser, updateUser } from "../../store/actions/auth.js";
+import Title from "../../ui/Title";
 
 const useStyles = makeStyles({
   cardContainer: {

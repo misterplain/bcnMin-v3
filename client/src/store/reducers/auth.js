@@ -1,13 +1,4 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  USER_LOADED,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
-  UPDATE_USER,
-} from "../actions/types";
+import * as actions from '../actions/types';
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -21,7 +12,7 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
   //user loaded and auth error
   switch (type) {
-    case USER_LOADED:
+    case actions.USER_LOADED:
       return {
         ...state,
         isAuthenticated: true,
@@ -29,7 +20,7 @@ export default function (state = initialState, action) {
         user: payload,
       };
 
-    case REGISTER_SUCCESS:
+    case actions.REGISTER_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         ...state,
@@ -37,7 +28,7 @@ export default function (state = initialState, action) {
         isAuthenticated: true,
         loading: false,
       };
-    case LOGIN_SUCCESS:
+    case actions.LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         ...state,
@@ -45,7 +36,7 @@ export default function (state = initialState, action) {
         isAuthenticated: true,
         loading: false,
       };
-    case REGISTER_FAIL:
+    case actions.REGISTER_FAIL:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -53,7 +44,7 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         loading: false,
       };
-    case LOGIN_FAIL:
+    case actions.LOGIN_FAIL:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -61,7 +52,7 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         loading: false,
       };
-    case AUTH_ERROR:
+    case actions.AUTH_ERROR:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -70,7 +61,7 @@ export default function (state = initialState, action) {
         token: null,
       };
 
-    case LOGOUT:
+    case actions.LOGOUT:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -79,7 +70,7 @@ export default function (state = initialState, action) {
         token: null,
       };
 
-    case UPDATE_USER:
+    case actions.UPDATE_USER:
       let cloneState = { ...state };
       if (action.payload?.isAddToFavorite) {
         cloneState.user.favorites = [
@@ -87,10 +78,9 @@ export default function (state = initialState, action) {
           action.payload.blogId,
         ];
       } else {
-    
-       
-        cloneState.user.favorites =  cloneState.user.favorites?.filter((value,index)=>value!==action.payload.blogId);
-     
+        cloneState.user.favorites = cloneState.user.favorites?.filter(
+          (value, index) => value !== action.payload.blogId
+        );
       }
       return cloneState;
 

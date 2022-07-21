@@ -4,7 +4,7 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 //redux
-import { login } from "../actions/auth";
+import { login } from "../store/actions/auth";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 

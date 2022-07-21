@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Container from "@material-ui/core/Container";
-import { REDUCEPRODUCTS } from "../shared/reduceproducts";
-import { REDUCETIPS } from "../shared/reducetips";
-import { REDUCEWASTE } from "../shared/reducewaste";
+import { REDUCEPRODUCTS } from "../../shared/reduceproducts";
+import { REDUCETIPS } from "../../shared/reducetips";
+import { REDUCEWASTE } from "../../shared/reducewaste";
 import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
 import { CardActionArea } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
