@@ -9,7 +9,14 @@ import {
   Box,
   Typography,
   Container,
-  Modal, TextField
+  Modal,
+  TextField,
+  FormGroup,
+  FormGroupLabel,
+  FormControlLabel,
+  Checkbox,
+  FormLabel,
+  FormControl, TextareaAutosize
 } from "@material-ui/core";
 //redux
 import { connect } from "react-redux";
@@ -78,64 +85,85 @@ const Collab = (props) => {
   };
   return (
     <Container size='sm'>
-      <form onSubmit={formik.handleSubmit}>
-        <div className='form-group'>
-          <label htmlFor='name'>Name</label>
-          <input
-            type='text'
-            name='name'
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            className='form-control'
+      <FormControl onSubmit={formik.handleSubmit}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <TextField
+                type='text'
+                name='name'
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                className='form-control'
+              />
+            }
+            label='Name'
           />
+
           {formik.errors.name && formik.touched.name ? (
             <div className='collab__errors'>{formik.errors.name}</div>
           ) : null}
-        </div>
-        <div className='form-group'>
-          <label htmlFor='phone'>Phone (optional)</label>
-          <input
-            type='number'
-            name='phoneNum'
-            value={formik.values.phoneNum}
-            onChange={formik.handleChange}
-            className='form-control'
-          />
-          {/* {formik.errors.phoneNum && formik.touched.phoneNum ? (
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <TextField
+                  type='number'
+                  name='phoneNum'
+                  value={formik.values.phoneNum}
+                  onChange={formik.handleChange}
+                  className='form-control'
+                />
+              }
+              label='Phone Number'
+            />
+
+            {/* {formik.errors.phoneNum && formik.touched.phoneNum ? (
                 <div className="collab__errors">{formik.errors.phoneNum}</div>
               ) : null} */}
-        </div>
-        <div className='form-group'>
-          <label htmlFor='email'>Email</label>
-          <input
-            type='text'
-            name='email'
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            className='form-control'
-          />
-          {formik.errors.email && formik.touched.email ? (
-            <div className='collab__errors'>{formik.errors.email}</div>
-          ) : null}
-        </div>
-        <div className='form-group'>
-          <label htmlFor='message'>Enter your message here</label>
-          <textarea
-            type='text'
-            name='message'
-            rows='4'
-            value={formik.values.message}
-            onChange={formik.handleChange}
-            className='form-control'
-          />
-          {formik.errors.message && formik.touched.message ? (
-            <div className='collab__errors'>{formik.errors.message}</div>
-          ) : null}
-        </div>
+          </FormGroup>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <TextField
+                  type='text'
+                  name='email'
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  className='form-control'
+                />
+              }
+              label='Email'
+            />
+
+            {formik.errors.email && formik.touched.email ? (
+              <div className='collab__errors'>{formik.errors.email}</div>
+            ) : null}
+          </FormGroup>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <TextareaAutosize
+                  type='text'
+                  name='message'
+                  rows='4'
+                  value={formik.values.message}
+                  onChange={formik.handleChange}
+                  className='form-control'
+                />
+              }
+              label='Enter your message here'
+            />
+
+            {formik.errors.message && formik.touched.message ? (
+              <div className='collab__errors'>{formik.errors.message}</div>
+            ) : null}
+          </FormGroup>
+        </FormGroup>
+
         <Button type='submit' onClick={handleOpen}>
           Submit feedback
         </Button>
-      </form>
+      </FormControl>
 
       <div className='collab__list'>
         {collab.map((collab) => {
@@ -175,6 +203,5 @@ const Collab = (props) => {
     </Container>
   );
 };
-
 
 export default connect(null)(Collab);
