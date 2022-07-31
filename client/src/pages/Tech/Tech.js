@@ -1,18 +1,6 @@
 import React, { useState } from "react";
-import {
-  Typography,
-  FormControlLabel,
-  Button,
-  TextField,
-  FormLabel,
-  FormControl,
-  Box,
-  Card,
-  Grid,
-} from "@material-ui/core";
+import { Typography, Button, TextField, Box, Grid } from "@material-ui/core";
 import Link from "@mui/material/Link";
-
-import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -20,7 +8,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Tech.css";
 import { TOOLS } from "../../shared/tools";
-import PropTypes from "prop-types";
 import Modal from "../../ui/Modal";
 
 const tools = TOOLS;

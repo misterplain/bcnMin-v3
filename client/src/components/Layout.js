@@ -279,7 +279,7 @@ function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props
           {drawer}
         </Drawer>
       </Box>
-      <Box component='main' sx={{ p: 3, mt: '140px' }}>
+      <Box component='main' sx={{ p: 3, mt: '140px', width: '100%' }}>
         {children}
       </Box>
     </Box>

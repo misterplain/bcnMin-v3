@@ -4,39 +4,59 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   Button,
-  Backdrop,
   Fade,
   Box,
   Typography,
-  Container,
-  Modal,
   TextField,
   FormGroup,
-  FormGroupLabel,
   FormControlLabel,
-  Checkbox,
-  FormLabel,
   FormControl,
-  TextareaAutosize,
-  Grid,
+  Grid
 } from "@material-ui/core";
+import Link from "@mui/material/Link";
 import { makeStyles } from "@material-ui/core/styles";
+import Modal from "../../ui/Modal";
 //redux
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 const collab = COLLAB;
 
-const createStyles = makeStyles({
+const useStyles = makeStyles({
   container: {
-    border: "1px solid #e0e0e0",
     width: "100%",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  formContainer: {
+    width: "70%",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  form: {
+    width: "90%",
+  },
+  collabList: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "20px",
+  },
+  collabCard: {
+    textDecoration: "none",
+    textAlign: "center",
+    color: "white",
+    backgroundColor: "green",
+    margin: "3px",
+    borderRadius: "10px",
   },
 });
 
-//collab modal
+//modal style
 const style = {
-  position: "absolute",
+  position: "rela",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -51,12 +71,12 @@ const validationSchema = Yup.object({
   name: Yup.string()
     .min(3, "Your name should have more than 3 characters")
     .required("Required"),
-  // phoneNum: Yup.string()
-  //   .min(
-  //     9,
-  //     "Phone number should have more than 3 characters, please include country code"
-  //   )
-  //   .required("Required"),
+  phoneNum: Yup.string()
+    .min(
+      9,
+      "Phone number should have more than 3 characters, please include country code"
+    )
+    .required("Required"),
   email: Yup.string().min(3, "Too short").required("Required"),
   message: Yup.string()
     .min(2, "You can do better than that")
@@ -64,7 +84,7 @@ const validationSchema = Yup.object({
 });
 
 const Collab = (props) => {
-  const styles = createStyles();
+  const classes = useStyles();
   const [contact, setContact] = useState("");
   const formik = useFormik({
     initialValues: {
@@ -95,137 +115,147 @@ const Collab = (props) => {
     props.setAlert("THIS IS AN ALERT TEST AND IT WORKED!", "success");
   };
   return (
-    <Grid container className={styles.container}>
-      <Grid item xs={12} sm={12} md={12} >
-        <FormControl onSubmit={formik.handleSubmit}>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <TextField
-                  type='text'
-                  name='name'
-                  label='Name'
-                  variant='outlined'
-                  color='success'
-                  fullWidth
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  className='form-control'
-                />
-              }
-            />
-
-            {formik.errors.name && formik.touched.name ? (
-              <div className='collab__errors'>{formik.errors.name}</div>
-            ) : null}
+    <>
+      <Grid container className={classes.container} xs={12} sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12} className={classes.formContainer}>
+          <form onSubmit={formik.handleSubmit} className={classes.form}>
             <FormGroup>
               <FormControlLabel
                 control={
                   <TextField
-                    type='number'
-                    name='phoneNum'
-                    label='Phone Number (optional)'
+                    name='name'
+                    label='Name'
                     variant='outlined'
                     color='success'
                     fullWidth
-                    value={formik.values.phoneNum}
+                    value={formik.values.name}
                     onChange={formik.handleChange}
-                    className='form-control'
+                    className=''
                   />
                 }
               />
 
-              {/* {formik.errors.phoneNum && formik.touched.phoneNum ? (
+              {formik.errors.name && formik.touched.name ? (
+                <div className='collab__errors'>{formik.errors.name}</div>
+              ) : null}
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <TextField
+                      type='number'
+                      name='phoneNum'
+                      label='Phone Number (optional)'
+                      variant='outlined'
+                      color='success'
+                      fullWidth
+                      value={formik.values.phoneNum}
+                      onChange={formik.handleChange}
+                      className='form-control'
+                    />
+                  }
+                />
+
+                {/* {formik.errors.phoneNum && formik.touched.phoneNum ? (
                 <div className="collab__errors">{formik.errors.phoneNum}</div>
               ) : null} */}
-            </FormGroup>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <TextField
-                    type='text'
-                    name='email'
-                    label='Email'
-                    variant='outlined'
-                    color='success'
-                    fullWidth
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    className='form-control'
-                  />
-                }
-              />
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <TextField
+                      type='text'
+                      name='email'
+                      label='Email'
+                      variant='outlined'
+                      color='success'
+                      fullWidth
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      className='form-control'
+                    />
+                  }
+                />
 
-              {formik.errors.email && formik.touched.email ? (
-                <div className='collab__errors'>{formik.errors.email}</div>
-              ) : null}
-            </FormGroup>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <TextField
-                    type='text'
-                    name='message'
-                    label='Enter your message here'
-                    rows='4'
-                    Multiline={true}
-                    variant='outlined'
-                    color='success'
-                    fullWidth
-                    value={formik.values.message}
-                    onChange={formik.handleChange}
-                    className='form-control'
-                  />
-                }
-              />
+                {formik.errors.email && formik.touched.email ? (
+                  <div className='collab__errors'>{formik.errors.email}</div>
+                ) : null}
+              </FormGroup>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <TextField
+                      type='text'
+                      name='message'
+                      label='Enter your message here'
+                      rows='4'
+                      Multiline={true}
+                      variant='outlined'
+                      color='success'
+                      fullWidth
+                      value={formik.values.message}
+                      onChange={formik.handleChange}
+                      className='form-control'
+                    />
+                  }
+                />
 
-              {formik.errors.message && formik.touched.message ? (
-                <div className='collab__errors'>{formik.errors.message}</div>
-              ) : null}
+                {formik.errors.message && formik.touched.message ? (
+                  <div className='collab__errors'>{formik.errors.message}</div>
+                ) : null}
+              </FormGroup>
             </FormGroup>
-          </FormGroup>
 
-          <Button type='submit' onClick={handleOpen}>
-            Submit feedback
-          </Button>
-        </FormControl>
+            <Button
+              type='submit'
+              onClick={handleOpen}
+              className={classes.button}
+            >
+              Submit feedback
+            </Button>
+          </form>
+        </Grid>
+        <Grid container spacing={3} className={classes.collabList}>
+          {collab.map((collab) => {
+            return (
+              <Grid
+                item
+                xs={11}
+                sm={5}
+                md={2}
+                key={collab.id}
+                className={classes.collabCard}
+              >
+                <Link
+                  href={collab.src}
+                  target='_blank'
+                  rel='noreferrer'
+                  underline='none'
+                  color='inherit'
+                >
+                  <Typography>{collab.name}</Typography>
+                </Link>
+              </Grid>
+            );
+          })}
+        </Grid>
+        <Modal open={open} setOpen={setOpen} onClose={() => setOpen(false)}>
+          <Fade in={open}>
+            <Box sx={style}>
+              <Typography
+                id='transition-modal-title'
+                variant='h6'
+                component='h2'
+              >
+                Your water footprint
+              </Typography>
+              <Typography id='transition-modal-description' sx={{ mt: 2 }}>
+                Your weekly water footprint is year
+              </Typography>
+            </Box>
+          </Fade>
+        </Modal>
       </Grid>
-      <div className='collab__list'>
-        {collab.map((collab) => {
-          return (
-            <div key={collab.id} className='collab__list-card'>
-              <a href={collab.src} target='_blank' rel='noreferrer'>
-                <p className='collab__list-card-text'>{collab.name}</p>
-              </a>
-            </div>
-          );
-        })}
-      </div>
-
-      <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id='transition-modal-title' variant='h6' component='h2'>
-              Your water footprint
-            </Typography>
-            <Typography id='transition-modal-description' sx={{ mt: 2 }}>
-              Your weekly water footprint is which is over the course of a month
-              and over the course of a year
-            </Typography>
-          </Box>
-        </Fade>
-      </Modal>
-    </Grid>
+    </>
   );
 };
 
