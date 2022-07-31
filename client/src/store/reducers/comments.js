@@ -1,6 +1,5 @@
 import * as actions from "../actions/types";
 
-
 const initialState = {
   comments: [],
 };
@@ -18,10 +17,6 @@ export default function commentsReducer(state = initialState, action) {
           (comment) => comment._id !== action.payload
         ),
       };
-
-    // case actions.ADD_COMMENT:{
-    //   let newState = {...state};
-    // }
 
     default:
       return state;

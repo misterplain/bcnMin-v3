@@ -16,13 +16,23 @@ import {
   FormControlLabel,
   Checkbox,
   FormLabel,
-  FormControl, TextareaAutosize
+  FormControl,
+  TextareaAutosize,
+  Grid,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 //redux
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const collab = COLLAB;
+
+const createStyles = makeStyles({
+  container: {
+    border: "1px solid #e0e0e0",
+    width: "100%",
+  },
+});
 
 //collab modal
 const style = {
@@ -54,6 +64,7 @@ const validationSchema = Yup.object({
 });
 
 const Collab = (props) => {
+  const styles = createStyles();
   const [contact, setContact] = useState("");
   const formik = useFormik({
     initialValues: {
@@ -84,87 +95,101 @@ const Collab = (props) => {
     props.setAlert("THIS IS AN ALERT TEST AND IT WORKED!", "success");
   };
   return (
-    <Container size='sm'>
-      <FormControl onSubmit={formik.handleSubmit}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <TextField
-                type='text'
-                name='name'
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                className='form-control'
-              />
-            }
-            label='Name'
-          />
-
-          {formik.errors.name && formik.touched.name ? (
-            <div className='collab__errors'>{formik.errors.name}</div>
-          ) : null}
+    <Grid container className={styles.container}>
+      <Grid item xs={12} sm={12} md={12} >
+        <FormControl onSubmit={formik.handleSubmit}>
           <FormGroup>
             <FormControlLabel
               control={
                 <TextField
-                  type='number'
-                  name='phoneNum'
-                  value={formik.values.phoneNum}
+                  type='text'
+                  name='name'
+                  label='Name'
+                  variant='outlined'
+                  color='success'
+                  fullWidth
+                  value={formik.values.name}
                   onChange={formik.handleChange}
                   className='form-control'
                 />
               }
-              label='Phone Number'
             />
 
-            {/* {formik.errors.phoneNum && formik.touched.phoneNum ? (
+            {formik.errors.name && formik.touched.name ? (
+              <div className='collab__errors'>{formik.errors.name}</div>
+            ) : null}
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <TextField
+                    type='number'
+                    name='phoneNum'
+                    label='Phone Number (optional)'
+                    variant='outlined'
+                    color='success'
+                    fullWidth
+                    value={formik.values.phoneNum}
+                    onChange={formik.handleChange}
+                    className='form-control'
+                  />
+                }
+              />
+
+              {/* {formik.errors.phoneNum && formik.touched.phoneNum ? (
                 <div className="collab__errors">{formik.errors.phoneNum}</div>
               ) : null} */}
+            </FormGroup>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <TextField
+                    type='text'
+                    name='email'
+                    label='Email'
+                    variant='outlined'
+                    color='success'
+                    fullWidth
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    className='form-control'
+                  />
+                }
+              />
+
+              {formik.errors.email && formik.touched.email ? (
+                <div className='collab__errors'>{formik.errors.email}</div>
+              ) : null}
+            </FormGroup>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <TextField
+                    type='text'
+                    name='message'
+                    label='Enter your message here'
+                    rows='4'
+                    Multiline={true}
+                    variant='outlined'
+                    color='success'
+                    fullWidth
+                    value={formik.values.message}
+                    onChange={formik.handleChange}
+                    className='form-control'
+                  />
+                }
+              />
+
+              {formik.errors.message && formik.touched.message ? (
+                <div className='collab__errors'>{formik.errors.message}</div>
+              ) : null}
+            </FormGroup>
           </FormGroup>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <TextField
-                  type='text'
-                  name='email'
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  className='form-control'
-                />
-              }
-              label='Email'
-            />
 
-            {formik.errors.email && formik.touched.email ? (
-              <div className='collab__errors'>{formik.errors.email}</div>
-            ) : null}
-          </FormGroup>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <TextareaAutosize
-                  type='text'
-                  name='message'
-                  rows='4'
-                  value={formik.values.message}
-                  onChange={formik.handleChange}
-                  className='form-control'
-                />
-              }
-              label='Enter your message here'
-            />
-
-            {formik.errors.message && formik.touched.message ? (
-              <div className='collab__errors'>{formik.errors.message}</div>
-            ) : null}
-          </FormGroup>
-        </FormGroup>
-
-        <Button type='submit' onClick={handleOpen}>
-          Submit feedback
-        </Button>
-      </FormControl>
-
+          <Button type='submit' onClick={handleOpen}>
+            Submit feedback
+          </Button>
+        </FormControl>
+      </Grid>
       <div className='collab__list'>
         {collab.map((collab) => {
           return (
@@ -200,7 +225,7 @@ const Collab = (props) => {
           </Box>
         </Fade>
       </Modal>
-    </Container>
+    </Grid>
   );
 };
 
