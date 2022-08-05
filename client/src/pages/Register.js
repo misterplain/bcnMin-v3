@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 //redux
 import { connect } from "react-redux";
-import { register } from "../store/actions/auth";
+import { register } from "../actions/auth";
 import PropTypes from "prop-types";
 
 const Register = ({ setAlert, register, isAuthenticated }) => {

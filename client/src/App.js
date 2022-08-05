@@ -15,8 +15,8 @@ import { purple } from "@material-ui/core/colors";
 import Layout from "./components/Layout";
 //redux
 import { Provider } from "react-redux";
-import store from "./store/store";
-import { loadUser } from "./store/actions/auth";
+import store from "./store";
+import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 
 const theme = createMuiTheme({
