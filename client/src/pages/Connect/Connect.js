@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 });
 
 const Connect = ({ auth: { isAuthenticated, loading } }) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState("");
   const { user = {} } = useSelector((state) => state.auth);
@@ -77,10 +77,10 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Grid container maxWidth='md' className={classes.container}>
+    <div className={styles.root}>
+      <Grid container maxWidth='md' className={styles.container}>
         <Grid item xs={12} sm={12} md={8} lg={8} xl={6}>
-          <Title title={"chat with your community"} />{" "}
+          <Title title={"chat with your community"} />
         </Grid>
         <Grid item xs={12} sm={12} md={8} lg={8} xl={6}>
           {isAuthenticated ? (

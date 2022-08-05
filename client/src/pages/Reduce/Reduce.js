@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 export default function Reduce() {
-  const classes = useStyles();
+  const styles = useStyles();
   const [index, setIndex] = useState(0);
   const product = REDUCEPRODUCTS;
   const { title, price, src, site, description } = product[index];
@@ -60,7 +60,7 @@ export default function Reduce() {
 
   return (
     <Container size='sm'>
-      <Card className={classes.card} >
+      <Card className={styles.card} >
         <CardActionArea>
           <CardMedia
             component='img'

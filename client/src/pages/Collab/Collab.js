@@ -84,7 +84,7 @@ const validationSchema = Yup.object({
 });
 
 const Collab = (props) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const [contact, setContact] = useState("");
   const formik = useFormik({
     initialValues: {
@@ -116,9 +116,9 @@ const Collab = (props) => {
   };
   return (
     <>
-      <Grid container className={classes.container} xs={12} sm={12} md={12}>
-        <Grid item xs={12} sm={12} md={12} className={classes.formContainer}>
-          <form onSubmit={formik.handleSubmit} className={classes.form}>
+      <Grid container className={styles.container} xs={12} sm={12} md={12}>
+        <Grid item xs={12} sm={12} md={12} className={styles.formContainer}>
+          <form onSubmit={formik.handleSubmit} className={styles.form}>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -208,13 +208,13 @@ const Collab = (props) => {
             <Button
               type='submit'
               onClick={handleOpen}
-              className={classes.button}
+              className={styles.button}
             >
               Submit feedback
             </Button>
           </form>
         </Grid>
-        <Grid container spacing={3} className={classes.collabList}>
+        <Grid container spacing={3} className={styles.collabList}>
           {collab.map((collab) => {
             return (
               <Grid
@@ -223,7 +223,7 @@ const Collab = (props) => {
                 sm={5}
                 md={2}
                 key={collab.id}
-                className={classes.collabCard}
+                className={styles.collabCard}
               >
                 <Link
                   href={collab.src}

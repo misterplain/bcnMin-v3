@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 });
 
 const Inform = () => {
-  const classes = useStyles();
+  const styles = useStyles();
   const [favorites, setFavorites] = useState([]);
   function deleteFavorite(blogId) {
     console.log(blogId);
@@ -61,17 +61,17 @@ const Inform = () => {
   return (
     <Container size='sm'>
       <h1>Favorites</h1>
-      <div className={classes.cardContainer}>
+      <div className={styles.cardContainer}>
       {favorites.map((favorite) => {
         return (
-          <Card sx={{ maxWidth: 45 }} className={classes.card}>
+          <Card sx={{ maxWidth: 45 }} className={styles.card}>
             <CardMedia
               component='img'
               height='150'
               image={favorite.img}
               alt='green iguana'
             />
-            <CardContent className={classes.cardContent}>
+            <CardContent className={styles.cardContent}>
               <Typography gutterBottom variant='h5' component='div'>
                 {favorite.title}
               </Typography>

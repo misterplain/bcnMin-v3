@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 const Inform = ({ auth: { isAuthenticated, loading } }) => {
-  const classes = useStyles();
+  const styles = useStyles();
   const [blogPost, setBlogPost] = useState([]);
   const [favorite, setFavorite] = useState(false);
   const [change, setChange] = useState();
@@ -105,18 +105,18 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
   return (
     <Container size='sm'>
       <Title title={"news concerning local efforts to minimize"} />
-      <Grid container spacing={2} className={classes.cardContainer}>
+      <Grid container spacing={2} className={styles.cardContainer}>
         {blogPost.map((blogPost) => {
           return (
             <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
-              <Card sx={{ maxWidth: 45 }} className={classes.card}>
+              <Card sx={{ maxWidth: 45 }} className={styles.card}>
                 <CardMedia
                   component='img'
                   height='150'
                   image={blogPost.img}
                   alt='green iguana'
                 />
-                <CardContent className={classes.cardContent}>
+                <CardContent className={styles.cardContent}>
                   <Typography gutterBottom variant='h5' component='div'>
                     {blogPost.title}
                   </Typography>

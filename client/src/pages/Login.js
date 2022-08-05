@@ -1,14 +1,29 @@
 import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
-import { Button, TextField, Typography } from "@material-ui/core";
+
+import { Button, TextField, Typography, Grid } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import Title from "../ui/Title";
+import { makeStyles } from "@material-ui/core/styles";
 //redux
 import { login } from "../actions/auth";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+const useStyles = makeStyles({
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    marginTop: "2rem",
+  },
+  formButton: {
+    marginTop: "1rem",
+  },
+});
+
 const Login = ({ login, isAuthenticated }) => {
+  const styles = useStyles();
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,40 +47,51 @@ const Login = ({ login, isAuthenticated }) => {
   }
 
   return (
-    <Container size='sm'>
-      <h1>Login</h1>
-      <form onSubmit={(e) => onSubmit(e)}>
-        <TextField
-          onChange={(e) => setEmail(e.target.value)}
-          className=''
-          label='Email'
-          variant='outlined'
-          color='secondary'
-          fullWidth
-          required
-          value={email}
-          error={emailError}
-        />
-        <TextField
-          onChange={(e) => setPassword(e.target.value)}
-          className=''
-          label='Password'
-          variant='outlined'
-          color='secondary'
-          fullWidth
-          required
-          value={password}
-          error={passwordError}
-        />
-        <Button type='submit' variant='contained' color='secondary'>
-          Login
-        </Button>
-      </form>
-      <Typography />
-      Don't have an account?
-      <Typography />{" "}
-      <Button onClick={() => history.push("/register")}>Register Now</Button>
-    </Container>
+    <Grid container spacing={1} direction='column'>
+      <Grid item xs={12}>
+        <Title title={"login"} />
+      </Grid>
+      <Grid item xs={12} md={8} justifyContent='center'>
+        <form onSubmit={(e) => onSubmit(e)} className={styles.form}>
+          <TextField
+            onChange={(e) => setEmail(e.target.value)}
+            className=''
+            label='Email'
+            variant='outlined'
+            color='secondary'
+            fullWidth
+            required
+            value={email}
+            error={emailError}
+          />
+          <TextField
+            onChange={(e) => setPassword(e.target.value)}
+            className=''
+            label='Password'
+            variant='outlined'
+            color='secondary'
+            fullWidth
+            required
+            value={password}
+            error={passwordError}
+          />
+          <Button
+            type='submit'
+            variant='contained'
+            color='success'
+            className={styles.formButton}
+          >
+            Login
+          </Button>
+        </form>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography />
+        Don't have an account?
+        <Button onClick={() => history.push("/register")}>Register Now</Button>
+        <Typography />{" "}
+      </Grid>
+    </Grid>
   );
 };
 

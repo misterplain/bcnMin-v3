@@ -57,7 +57,7 @@ const validationSchema = Yup.object({
 });
 
 const Tech = () => {
-  const classes = useSyles();
+  const styles = useSyles();
   const [answer, setAnswer] = useState(0);
 
   const formik = useFormik({
@@ -174,7 +174,7 @@ const Tech = () => {
           </Fade>
         </Modal>
       </form>
-      <Grid container spacing={3} className={classes.toolsContainer}>
+      <Grid container spacing={3} className={styles.toolsContainer}>
         {tools.map((tools) => {
           return (
             <Grid
@@ -183,7 +183,7 @@ const Tech = () => {
               sm={5}
               md={2}
               key={tools.id}
-              className={classes.techCard}
+              className={styles.techCard}
             >
               <Link
                 href={tools.src}
