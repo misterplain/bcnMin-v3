@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import {useEffect} from 'react'
+import { useEffect } from "react";
 //components
 import Inform from "./pages/Inform/Inform";
 import Connect from "./pages/Connect/Connect";
@@ -47,10 +47,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
-          
           <Layout>
             <Switch>
-              <Route exact path='/inform'>
+              <Route exact path='/'>
                 <Inform />
               </Route>
               <Route path='/connect'>

@@ -7,6 +7,8 @@ import {
   CardMedia,
   Button,
   Typography,
+  Grid,
+  Item,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import Container from "@material-ui/core/Container";
@@ -19,16 +21,10 @@ import Title from "../../ui/Title";
 
 const useStyles = makeStyles({
   cardContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    border: "1px solid black",
-    justifyContent: "center",
+    marginTop: "2rem",
   },
   card: {
-    display: "inline-block",
     border: "1px solid #e0e0e0",
-    margin: 20,
-    flexBasis: "40%",
     justifyContent: "center",
   },
   cardContent: {
@@ -108,11 +104,11 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
 
   return (
     <Container size='sm'>
-      <Title title={'news concerning local efforts to minimize'}/>
-      <div className={classes.cardContainer}>
+      <Title title={"news concerning local efforts to minimize"} />
+      <Grid container spacing={2} className={classes.cardContainer}>
         {blogPost.map((blogPost) => {
           return (
-            <>
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
               <Card sx={{ maxWidth: 45 }} className={classes.card}>
                 <CardMedia
                   component='img'
@@ -144,10 +140,10 @@ const Inform = ({ auth: { isAuthenticated, loading } }) => {
                   </CardActions>
                 </CardContent>
               </Card>
-            </>
+            </Grid>
           );
         })}
-      </div>
+      </Grid>
     </Container>
   );
 };

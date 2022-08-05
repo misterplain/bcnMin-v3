@@ -90,14 +90,14 @@ function Layout2({ children, auth: { isAuthenticated, loading }, logout }, props
   const logoutAndRedirect = () => {
     setAnchorEl(null);
     logout();
-    history.push("/inform");
+    history.push("/");
   }
 
   const menuItems = [
     {
       text: "Inform",
       icon: <AddCircleOutlineOutlined color='success' />,
-      path: "/inform",
+      path: "/",
     },
     {
       text: "Connect",
