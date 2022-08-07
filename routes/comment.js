@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
       path:"user",
       model:"User",
       select:{email:1,username:1,admin:1}
-    });
+    }).sort({createdAt:-1});
     res.json(comments);
     console.log('comments fetched')
   } catch (err) {

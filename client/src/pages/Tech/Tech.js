@@ -4,6 +4,7 @@ import Link from "@mui/material/Link";
 import Fade from "@mui/material/Fade";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Title from "../../ui/Title";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./Tech.css";
@@ -26,6 +27,28 @@ const style = {
 };
 
 const useSyles = makeStyles({
+  container: {
+    display: "flex",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "100%",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  intro: {
+    width: "100%",
+    margin: "15px",
+    fontSize: "2.5rem",
+  },
+  textField: {
+    margin: "10px",
+  },
+  formButton:{
+    marginTop: "1rem",
+    width: "40%",
+    marginLeft: "30%",
+    marginRight: "30%",
+  },
   toolsContainer: {
     display: "flex",
     justifyContent: "center",
@@ -77,6 +100,7 @@ const Tech = () => {
       );
       console.log(answer);
       resetForm();
+      handleOpen();
     },
   });
 
@@ -89,72 +113,93 @@ const Tech = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    <Container size='sm'>
-      <h1>Tech</h1>
-      <Typography>
-        {" "}
-        Megacorporations must be held accountable for their contribution to
-        global warming through policy and taxation, don’t lose sight of that!
-        However, on an individual basis, it’s helpful to check in on your part
-        too. Check in below with your water footprint, measured in gallons of
-        water.
-      </Typography>
+    <Grid
+      container
+      xs={12}
+      sm={11}
+      md={10}
+      maxWidth='md'
+      className={styles.container}
+    >
+      <Grid item xs={12}>
+        <Title title={"water footprint calculator"} />
+      </Grid>
+      <Grid item className={styles.intro}>
+        <Typography>
+          Megacorporations must be held accountable for their contribution to
+          global warming through policy and taxation, don’t lose sight of that!
+          However, on an individual basis, it’s helpful to check in on your part
+          too. Check in below with your water footprint, measured in gallons of
+          water.
+        </Typography>
+      </Grid>
+
       <form onSubmit={formik.handleSubmit}>
         <TextField
-          className=''
-          label='kilometers'
+          className={styles.textField}
+          label='kilometers driver per week on average'
           id='kilometers'
           variant='outlined'
           color='success'
           fullWidth
           value={formik.values.kilometers}
           onChange={formik.handleChange}
+          helperText={
+            formik.errors.kilometers && formik.touched.kilometers ? (
+              <div className=''>{formik.errors.kilometers}</div>
+            ) : null
+          }
         />
-        {formik.errors.kilometers && formik.touched.kilometers ? (
-          <div className=''>{formik.errors.kilometers}</div>
-        ) : null}
+
         <TextField
-          className=''
-          label='fastFashion'
+          className={styles.textField}
+          label='Fast Fashion items purchased per year'
           id='fastFashion'
           variant='outlined'
           color='success'
           fullWidth
           value={formik.values.fastFashion}
           onChange={formik.handleChange}
+          helperText={
+            formik.errors.fastFashion && formik.touched.fastFashion ? (
+              <div className=''>{formik.errors.fastFashion}</div>
+            ) : null
+          }
         />
-        {formik.errors.fastFashion && formik.touched.fastFashion ? (
-          <div className=''>{formik.errors.fastFashion}</div>
-        ) : null}
+
         <TextField
-          className=''
-          label='flightHours'
+          className={styles.textField}
+          label='Flight Hours over the course of a year'
           id='flightHours'
           variant='outlined'
           color='success'
           fullWidth
           value={formik.values.flightHours}
           onChange={formik.handleChange}
+          helperText={
+            formik.errors.flightHours && formik.touched.flightHours ? (
+              <div className=''>{formik.errors.flightHours}</div>
+            ) : null
+          }
         />
-        {formik.errors.flightHours && formik.touched.flightHours ? (
-          <div className=''>{formik.errors.flightHours}</div>
-        ) : null}
+
         <TextField
-          className=''
-          label='meat'
+          className={styles.textField}
+          label='Servings of meat consumed per week'
           id='meat'
           variant='outlined'
           color='success'
           fullWidth
           value={formik.values.meat}
           onChange={formik.handleChange}
+          helperText={
+            formik.errors.meat && formik.touched.meat ? (
+              <div className=''>{formik.errors.meat}</div>
+            ) : null
+          }
         />
-        {formik.errors.meat && formik.touched.meat ? (
-          <div className=''>{formik.errors.meat}</div>
-        ) : null}
-        <Button type='submit' onClick={handleOpen}>
-          Check Footprint
-        </Button>
+
+        <Button type='submit' className={styles.formButton}>Check Footprint</Button>
         <Modal open={open} setOpen={setOpen} onClose={() => setOpen(false)}>
           <Fade in={open}>
             <Box sx={style}>
@@ -175,6 +220,9 @@ const Tech = () => {
         </Modal>
       </form>
       <Grid container spacing={3} className={styles.toolsContainer}>
+        <Grid item xs={12}>
+          <Title title={"tools to help you minimize"} />
+        </Grid>
         {tools.map((tools) => {
           return (
             <Grid
@@ -211,7 +259,7 @@ const Tech = () => {
           ))}
         </Grid>
       </Box> */}
-    </Container>
+    </Grid>
   );
 };
 

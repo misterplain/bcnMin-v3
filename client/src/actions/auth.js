@@ -82,6 +82,7 @@ export const login = (email, password) => async (dispatch) => {
       body,
       config
     );
+    console.log(res.data)
     dispatch({
       type: actions.LOGIN_SUCCESS,
       payload: res.data,
@@ -96,7 +97,7 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({
       type: actions.LOGIN_FAIL,
     });
-    console.log(error);
+
   }
 };
 

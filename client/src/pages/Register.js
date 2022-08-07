@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { Button, Container, Grid, Typography } from "@material-ui/core";
-import {useHistory} from 'react-router-dom';
+import { Button, Grid, Typography } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import TextField from "@material-ui/core/TextField";
 import Title from "../ui/Title";
 import { makeStyles } from "@material-ui/core/styles";
@@ -32,8 +34,24 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
   },
+  error: {
+    color: "red",
+    marginTop: "0px",
+    marginLeft: "30px",
+  },
+});
 
-})
+const validationSchema = Yup.object({
+  username: Yup.string().required("Please provide a username"),
+  email: Yup.string().required("Please provide an email"),
+  password: Yup.string()
+    .min(6)
+    .required("Please provide a password of at least 6 characters"),
+  password2: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "Passwords must match"
+  ),
+});
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const styles = useStyles();
@@ -41,24 +59,25 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [usernameError, setUsernameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const [password2, setPassword2] = useState("");
 
-  const handleSubmit = async (e) => {
-    console.log(username, email, password);
-    e.preventDefault();
-    if (username === "") {
-      setUsernameError(true);
-    }
-    if (email === "") {
-      setEmailError(true);
-    }
-    if (password === "") {
-      setPasswordError(true);
-    }
-    register({ username, email, password });
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      password: "",
+      password2: "",
+    },
+    validationSchema,
+    onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      register({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      });
+    },
+  });
 
   if (isAuthenticated) {
     return <Redirect to='/inform' />;
@@ -70,41 +89,81 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         <Title title='register' />
       </Grid>
       <Grid item xs={12} md={8} className={styles.formContainer}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
           <TextField
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={formik.handleChange}
+            id='username'
+            name='username'
             className={styles.textField}
             label='Username'
             variant='outlined'
             color='success'
             fullWidth
             required
-            value={username}
-            error={usernameError}
+            value={formik.values.username}
+            helperText={
+              formik.errors.username && formik.touched.username
+                ? formik.errors.username
+                : null
+            }
           />
           <TextField
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={formik.handleChange}
+            id='email'
+            name='email'
             className={styles.textField}
             label='Email'
             variant='outlined'
             color='success'
             fullWidth
             required
-            value={email}
-            error={emailError}
+            value={formik.values.email}
+            helperText={
+              formik.errors.email && formik.touched.email
+                ? formik.errors.email
+                : null
+            }
           />
           <TextField
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={formik.handleChange}
+            id='password'
+            name='password'
             className={styles.textField}
             label='Password'
             variant='outlined'
             color='success'
             fullWidth
             required
-            value={password}
-            error={passwordError}
+            value={formik.values.password}
+            helperText={
+              formik.errors.password && formik.touched.password
+                ? formik.errors.password
+                : null
+            }
           />
-          <Button type='submit' variant='contained' color='success' className={styles.formButton}>
+          <TextField
+            onChange={formik.handleChange}
+            id='password2'
+            name='password2'
+            className={styles.textField}
+            label='Confirm Password'
+            variant='outlined'
+            color='success'
+            fullWidth
+            required
+            value={formik.values.password2}
+            helperText={
+              formik.errors.password2 && formik.touched.password2
+                ? formik.errors.password2
+                : null
+            }
+          />
+          <Button
+            type='submit'
+            variant='contained'
+            color='success'
+            className={styles.formButton}
+          >
             Register
           </Button>
         </form>

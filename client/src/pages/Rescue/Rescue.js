@@ -1,20 +1,34 @@
 import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
+import { Grid, Typography, Card } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import Title from "../../ui/Title";
 import "./Rescue.css";
 
-export default function Rescue() {
-  return (
-    <Container size='sm'>
-      <h1>Rescue</h1>
-      <div className='rescue__container'>
-        <div className='rescue__title'>
-          <p className='rescue__title-text'>adopt, don't shop</p>
-          <p className='rescue__title-caption'>
-            Reduce your carbon pawprint by sharing your love and resources with
-            animals in need
-          </p>
-        </div>
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "100%",
+    justifyContent: "center",
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+  }
+});
 
+export default function Rescue() {
+  const styles = useStyles();
+  return (
+    <Grid container xs={12} sm={11} md={10} className={styles.container}>
+      <Grid item className={styles.title}>
+        <Title title={"adopt, don't shop."} />
+        <Typography variant="h6" component="div" gutterBottom>Reduce your carbon pawprint by sharing your love and resources with
+            animals in need </Typography>
+      </Grid>
+
+      <div className='rescue__container'>
         <div className='card-container-rescue'>
           <div className='card-rescue'>
             <a
@@ -83,6 +97,6 @@ export default function Rescue() {
           </div>
         </div>
       </div>
-    </Container>
+    </Grid>
   );
 }

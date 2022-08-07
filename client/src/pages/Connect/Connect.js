@@ -6,25 +6,52 @@ import {
   CardActions,
   Typography,
   Box,
-  Grid,
+  Grid
 } from "@material-ui/core";
 import axios from "axios";
 //redux and responsive buttons if logged in
-import PropTypes from "prop-types";
 import Title from "../../ui/Title";
 import { makeStyles } from "@material-ui/core/styles";
 //redux
 import { loadUser } from "../../actions/auth.js";
 import { connect, useSelector, useDispatch } from "react-redux";
-import deleteCommentAction from "../../actions/comments";
-import { StylesContext } from "@material-ui/styles";
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
   },
   container: {
-    border: "1px solid black",
+    display: "flex",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "100%",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  commentForm: {
+    width: "90%",
+    marginTop: "10px",
+    textAlign: "center",
+  },
+  commentButton: {
+    marginRight: "10px",
+  },
+  commentList: {
+    width: "90%",
+    display: "flex",
+    flexDirection: "column",
+    flexBasis: "auto",
+  },
+  comment: {
+    borderRadius: "20px",
+    margin: "10px",
+  },
+  username: {
+    color: "purple",
+  },
+  commentText: {
+    marginBottom: "0px",
+    fontSize: "1.7rem",
   },
 });
 
@@ -78,14 +105,20 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
 
   return (
     <div className={styles.root}>
-      <Grid container maxWidth='md' className={styles.container}>
-        <Grid item xs={12} sm={12} md={8} lg={8} xl={6}>
+      <Grid
+        container
+        xs={12}
+        sm={11}
+        md={10}
+        maxWidth='md'
+        className={styles.container}
+      >
+        <Grid item xs={12}>
           <Title title={"chat with your community"} />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} lg={8} xl={6}>
+        <Grid item className={styles.commentForm}>
           {isAuthenticated ? (
             <>
-              <h1>Add Comment</h1>
               <form onSubmit={(e) => postComment(e)}>
                 <TextField
                   onChange={(e) => setComment(e.target.value)}
@@ -98,7 +131,12 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
                   value={comment}
                 />
 
-                <Button type='submit' variant='contained' color='success'>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  color='success'
+                  className={styles.commentButton}
+                >
                   Post Comment
                 </Button>
               </form>
@@ -111,22 +149,30 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
             </>
           )}
         </Grid>
-
-        <Grid item xs={12} sm={12} md={8} lg={8} xl={6}>
-          <h1>comments section</h1>
-        </Grid>
-        <Grid item xs={12} sm={12} md={8} lg={8} xl={6}>
+        <Grid item className={styles.commentList}>
           {commentsList?.comments.map((comment) => {
             return (
               <>
-                <Card sx={{ minWidth: 275 }} key={comment?._id}>
+                <Card
+                  sx={{ minWidth: 275, transform: "scale(0.1)", mx: "15px" }}
+                  key={comment?._id}
+                  className={styles.comment}
+                >
                   <CardContent>
-                    <Typography variant='h5' component='div'>
+                    {" "}
+                    <Typography className={styles.username}>
+                      {comment?.user.username} says...
+                    </Typography>
+                    <Typography className={styles.commentText}>
                       {comment?.comment}
                     </Typography>
-                    <Typography variant='h5' component='div'>
-                      {comment?.user.username}
-                    </Typography>
+                    <Button
+                        type='submit'
+                        value={comment?._id}
+                        // onClick={() => deleteComment(comment?._id)}
+                      >
+                        Reply
+                      </Button>
                   </CardContent>{" "}
                   {isAuthenticated && user?._id === comment?.user._id ? (
                     <CardActions>
@@ -136,6 +182,13 @@ const Connect = ({ auth: { isAuthenticated, loading } }) => {
                         onClick={() => deleteComment(comment?._id)}
                       >
                         Delete
+                      </Button>
+                      <Button
+                        type='submit'
+                        value={comment?._id}
+                        // onClick={() => deleteComment(comment?._id)}
+                      >
+                        Edit
                       </Button>
                     </CardActions>
                   ) : null}
