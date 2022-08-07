@@ -14,9 +14,9 @@ import PropTypes from "prop-types";
 import Title from "../../ui/Title";
 import { makeStyles } from "@material-ui/core/styles";
 //redux
-import { loadUser } from "../../store/actions/auth.js";
+import { loadUser } from "../../actions/auth.js";
 import { connect, useSelector, useDispatch } from "react-redux";
-import deleteCommentAction from "../../store/actions/comments";
+import deleteCommentAction from "../../actions/comments";
 import { StylesContext } from "@material-ui/styles";
 
 const useStyles = makeStyles({

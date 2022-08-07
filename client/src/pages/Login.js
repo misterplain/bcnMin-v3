@@ -11,14 +11,29 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
-  form: {
+  formContainer: {
     display: "flex",
-    flexDirection: "column",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "100%",
     justifyContent: "center",
-    marginTop: "2rem",
+  },
+  form: {
+   
+  },
+  textField: {
+    margin: "10px",
   },
   formButton: {
     marginTop: "1rem",
+    width: "40%",
+    marginLeft: "30%",
+    marginRight: "30%",
+  },
+  registerLine: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
@@ -51,14 +66,15 @@ const Login = ({ login, isAuthenticated }) => {
       <Grid item xs={12}>
         <Title title={"login"} />
       </Grid>
-      <Grid item xs={12} md={8} justifyContent='center'>
+      <Grid item xs={12} md={8} className={styles.formContainer}>
         <form onSubmit={(e) => onSubmit(e)} className={styles.form}>
           <TextField
             onChange={(e) => setEmail(e.target.value)}
-            className=''
+            className={styles.textField}
+
             label='Email'
             variant='outlined'
-            color='secondary'
+            color='success'
             fullWidth
             required
             value={email}
@@ -66,10 +82,10 @@ const Login = ({ login, isAuthenticated }) => {
           />
           <TextField
             onChange={(e) => setPassword(e.target.value)}
-            className=''
+            className={styles.textField}
             label='Password'
             variant='outlined'
-            color='secondary'
+            color='success'
             fullWidth
             required
             value={password}
@@ -85,7 +101,7 @@ const Login = ({ login, isAuthenticated }) => {
           </Button>
         </form>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} className={styles.registerLine}>
         <Typography />
         Don't have an account?
         <Button onClick={() => history.push("/register")}>Register Now</Button>

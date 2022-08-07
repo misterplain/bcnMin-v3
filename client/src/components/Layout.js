@@ -19,7 +19,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { AddCircleOutlineOutlined, SubjectOutlined } from "@material-ui/icons";
 //redux and responsive buttons if logged in
 import { connect } from "react-redux";
-import { logout } from "../store/actions/auth";
+import { logout } from "../actions/auth";
 import PropTypes from "prop-types";
 
 const drawerWidth = 240;
